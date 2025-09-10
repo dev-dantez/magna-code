@@ -1,10 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Special+Elite&display=swap");
 @import "tailwindcss";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Special+Elite&display=swap");
 
 :root {
   --background: #D3E4DE;
@@ -40,42 +39,98 @@ body {
 .symbol {
   position: absolute;
   animation: fall linear infinite;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
-.typewriter {
-  font-family: 'Special Elite', monospace;
-  overflow: hidden;
-  border-right: 0.15em solid #171717;
-  white-space: nowrap;
-  margin: 0 auto;
-  letter-spacing: 0.15em;
-  animation: typing 3.5s steps(40, end),
-    blink-caret 0.75s step-end infinite;
+/* 60 icons with faster fall speed and infinite animation */
+.symbol:nth-child(1) { left: 2%; animation-duration: 3s; animation-delay: 0s; }
+.symbol:nth-child(2) { left: 5%; animation-duration: 2.5s; animation-delay: 0.2s; }
+.symbol:nth-child(3) { left: 8%; animation-duration: 3.2s; animation-delay: 0.4s; }
+.symbol:nth-child(4) { left: 11%; animation-duration: 2.8s; animation-delay: 0.6s; }
+.symbol:nth-child(5) { left: 14%; animation-duration: 3.1s; animation-delay: 0.8s; }
+.symbol:nth-child(6) { left: 17%; animation-duration: 2.7s; animation-delay: 1.0s; }
+.symbol:nth-child(7) { left: 20%; animation-duration: 3.3s; animation-delay: 1.2s; }
+.symbol:nth-child(8) { left: 23%; animation-duration: 2.9s; animation-delay: 1.4s; }
+.symbol:nth-child(9) { left: 26%; animation-duration: 3.4s; animation-delay: 1.6s; }
+.symbol:nth-child(10) { left: 29%; animation-duration: 2.6s; animation-delay: 1.8s; }
+.symbol:nth-child(11) { left: 32%; animation-duration: 3.0s; animation-delay: 2.0s; }
+.symbol:nth-child(12) { left: 35%; animation-duration: 2.8s; animation-delay: 2.2s; }
+.symbol:nth-child(13) { left: 38%; animation-duration: 3.1s; animation-delay: 2.4s; }
+.symbol:nth-child(14) { left: 41%; animation-duration: 2.7s; animation-delay: 2.6s; }
+.symbol:nth-child(15) { left: 44%; animation-duration: 3.2s; animation-delay: 2.8s; }
+.symbol:nth-child(16) { left: 47%; animation-duration: 2.9s; animation-delay: 3.0s; }
+.symbol:nth-child(17) { left: 50%; animation-duration: 3.3s; animation-delay: 0.1s; }
+.symbol:nth-child(18) { left: 53%; animation-duration: 2.6s; animation-delay: 0.3s; }
+.symbol:nth-child(19) { left: 56%; animation-duration: 3.0s; animation-delay: 0.5s; }
+.symbol:nth-child(20) { left: 59%; animation-duration: 2.8s; animation-delay: 0.7s; }
+.symbol:nth-child(21) { left: 62%; animation-duration: 3.1s; animation-delay: 0.9s; }
+.symbol:nth-child(22) { left: 65%; animation-duration: 2.7s; animation-delay: 1.1s; }
+.symbol:nth-child(23) { left: 68%; animation-duration: 3.2s; animation-delay: 1.3s; }
+.symbol:nth-child(24) { left: 71%; animation-duration: 2.9s; animation-delay: 1.5s; }
+.symbol:nth-child(25) { left: 74%; animation-duration: 3.3s; animation-delay: 1.7s; }
+.symbol:nth-child(26) { left: 77%; animation-duration: 2.6s; animation-delay: 1.9s; }
+.symbol:nth-child(27) { left: 80%; animation-duration: 3.0s; animation-delay: 2.1s; }
+.symbol:nth-child(28) { left: 83%; animation-duration: 2.8s; animation-delay: 2.3s; }
+.symbol:nth-child(29) { left: 86%; animation-duration: 3.1s; animation-delay: 2.5s; }
+.symbol:nth-child(30) { left: 89%; animation-duration: 2.7s; animation-delay: 2.7s; }
+.symbol:nth-child(31) { left: 1%; animation-duration: 3.2s; animation-delay: 2.9s; }
+.symbol:nth-child(32) { left: 4%; animation-duration: 2.9s; animation-delay: 3.1s; }
+.symbol:nth-child(33) { left: 7%; animation-duration: 3.3s; animation-delay: 0.15s; }
+.symbol:nth-child(34) { left: 10%; animation-duration: 2.6s; animation-delay: 0.35s; }
+.symbol:nth-child(35) { left: 13%; animation-duration: 3.0s; animation-delay: 0.55s; }
+.symbol:nth-child(36) { left: 16%; animation-duration: 2.8s; animation-delay: 0.75s; }
+.symbol:nth-child(37) { left: 19%; animation-duration: 3.1s; animation-delay: 0.95s; }
+.symbol:nth-child(38) { left: 22%; animation-duration: 2.7s; animation-delay: 1.15s; }
+.symbol:nth-child(39) { left: 25%; animation-duration: 3.2s; animation-delay: 1.35s; }
+.symbol:nth-child(40) { left: 28%; animation-duration: 2.9s; animation-delay: 1.55s; }
+.symbol:nth-child(41) { left: 31%; animation-duration: 3.3s; animation-delay: 1.75s; }
+.symbol:nth-child(42) { left: 34%; animation-duration: 2.6s; animation-delay: 1.95s; }
+.symbol:nth-child(43) { left: 37%; animation-duration: 3.0s; animation-delay: 2.15s; }
+.symbol:nth-child(44) { left: 40%; animation-duration: 2.8s; animation-delay: 2.35s; }
+.symbol:nth-child(45) { left: 43%; animation-duration: 3.1s; animation-delay: 2.55s; }
+.symbol:nth-child(46) { left: 46%; animation-duration: 2.7s; animation-delay: 2.75s; }
+.symbol:nth-child(47) { left: 49%; animation-duration: 3.2s; animation-delay: 2.95s; }
+.symbol:nth-child(48) { left: 52%; animation-duration: 2.9s; animation-delay: 0.08s; }
+.symbol:nth-child(49) { left: 55%; animation-duration: 3.3s; animation-delay: 0.28s; }
+.symbol:nth-child(50) { left: 58%; animation-duration: 2.6s; animation-delay: 0.48s; }
+.symbol:nth-child(51) { left: 61%; animation-duration: 3.0s; animation-delay: 0.68s; }
+.symbol:nth-child(52) { left: 64%; animation-duration: 2.8s; animation-delay: 0.88s; }
+.symbol:nth-child(53) { left: 67%; animation-duration: 3.1s; animation-delay: 1.08s; }
+.symbol:nth-child(54) { left: 70%; animation-duration: 2.7s; animation-delay: 1.28s; }
+.symbol:nth-child(55) { left: 73%; animation-duration: 3.2s; animation-delay: 1.48s; }
+.symbol:nth-child(56) { left: 76%; animation-duration: 2.9s; animation-delay: 1.68s; }
+.symbol:nth-child(57) { left: 79%; animation-duration: 3.3s; animation-delay: 1.88s; }
+.symbol:nth-child(58) { left: 82%; animation-duration: 2.6s; animation-delay: 2.08s; }
+.symbol:nth-child(59) { left: 85%; animation-duration: 3.0s; animation-delay: 2.28s; }
+.symbol:nth-child(60) { left: 88%; animation-duration: 2.8s; animation-delay: 2.48s; }
+
+/* Black tech icons with faster animation */
+.symbol img {
+  width: 2.5rem;
+  height: 2.5rem;
+  filter: brightness(0) saturate(100%) invert(93%) sepia(6%) saturate(119%) hue-rotate(101deg) brightness(101%) contrast(92%); /* White-D3E4DE color */
+  transition: opacity 0.3s ease;
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+.symbol:hover img {
+  filter: brightness(0) saturate(100%) invert(0%);
+  transform: none;
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: #171717 }
-}
-
-/* Distribute symbols across the screen with different speeds and delays */
-.symbol:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
-.symbol:nth-child(2) { left: 10%; animation-duration: 12s; animation-delay: 1s; }
-.symbol:nth-child(3) { left: 15%; animation-duration: 14s; animation-delay: 2s; }
-/* Continue for all 36 symbols with different positions */
-.symbol:nth-child(36) { left: 95%; animation-duration: 13s; animation-delay: 0.5s; }
-
+/* Ultra-fast infinite falling animation */
 @keyframes fall {
   0% {
-    transform: translateY(-100%);
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
   }
   100% {
-    transform: translateY(100vh);
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
   }
 }
