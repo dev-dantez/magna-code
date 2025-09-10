@@ -1,7 +1,9 @@
 {
-  "name": "magna-code",
-  "version": "0.1.0",
-  "private": true,
+  "name": "magna-coders",
+  "version": "1.0.0",
+  "description": "A collaborative platform where developers, designers, and problem-solvers unite to create tech solutions for real-world challenges.",
+  "private": false,
+  "homepage": ".",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
@@ -32,5 +34,30 @@
     "eslint-config-next": "15.5.2",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "keywords": [
+    "pwa",
+    "chrome-web-app",
+    "developers",
+    "collaboration",
+    "tech-solutions",
+    "nextjs",
+    "react",
+    "progressive-web-app"
+  ],
+  "author": "Magna Coders Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/magna-coders/magna-coders-app"
+  },
+  "pwa": {
+    "name": "Magna Coders",
+    "short_name": "Magna",
+    "description": "Where developers, designers, and problem-solvers unite to create tech solutions for real-world challenges.",
+    "theme_color": "#F9E4AD",
+    "background_color": "#000000",
+    "display": "standalone",
+    "orientation": "portrait-primary"
   }
 }
