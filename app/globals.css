@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Special+Elite&display=swap");
+
 :root {
   --background: #D3E4DE;
   --foreground: #171717;
@@ -37,24 +43,6 @@ body {
   opacity: 0.7;
 }
 
-/* Distribute symbols across the screen with different speeds and delays */
-.symbol:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
-.symbol:nth-child(2) { left: 10%; animation-duration: 12s; animation-delay: 1s; }
-.symbol:nth-child(3) { left: 15%; animation-duration: 14s; animation-delay: 2s; }
-/* Continue for all 36 symbols with different positions */
-.symbol:nth-child(36) { left: 95%; animation-duration: 13s; animation-delay: 0.5s; }
-
-@keyframes fall {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100vh);
-  }
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
-
 .typewriter {
   font-family: 'Special Elite', monospace;
   overflow: hidden;
@@ -74,4 +62,20 @@ body {
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: #171717 }
+}
+
+/* Distribute symbols across the screen with different speeds and delays */
+.symbol:nth-child(1) { left: 5%; animation-duration: 15s; animation-delay: 0s; }
+.symbol:nth-child(2) { left: 10%; animation-duration: 12s; animation-delay: 1s; }
+.symbol:nth-child(3) { left: 15%; animation-duration: 14s; animation-delay: 2s; }
+/* Continue for all 36 symbols with different positions */
+.symbol:nth-child(36) { left: 95%; animation-duration: 13s; animation-delay: 0.5s; }
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
 }
