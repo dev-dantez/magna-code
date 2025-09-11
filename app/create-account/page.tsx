@@ -160,21 +160,13 @@ export default function CreateAccount() {
     // Update border styles
     const updateBorders = () => {
       const borders = getBorderStyles(step);
-      const containerRef = useRef<HTMLDivElement>(null);
       
       if (containerRef.current) {
-        const borders = {
-          top: { width: 0, height: 2 },
-          right: { width: 2, height: 0 },
-          bottom: { width: 0, height: 2 },
-          left: { width: 2, height: 0 }
-        };
-    
         const topBorder = containerRef.current.querySelector('.border-top') as HTMLElement;
         const rightBorder = containerRef.current.querySelector('.border-right') as HTMLElement;
         const bottomBorder = containerRef.current.querySelector('.border-bottom') as HTMLElement;
         const leftBorder = containerRef.current.querySelector('.border-left') as HTMLElement;
-    
+
         if (topBorder) topBorder.style.width = `${borders.top.width}px`;
         if (rightBorder) rightBorder.style.height = `${borders.right.height}px`;
         if (bottomBorder) bottomBorder.style.width = `${borders.bottom.width}px`;
