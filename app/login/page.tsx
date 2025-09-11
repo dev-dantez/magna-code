@@ -1,18 +1,22 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 
-export default function Login() {
+export default function CreateAccount() {
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: '',
+    role: 'developer'
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [ballPosition, setBallPosition] = useState({ x: 0, y: 0 });
+  const [step, setStep] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
@@ -22,11 +26,14 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: Record<string, string> = {};
 
     // Validation
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
+    }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -34,21 +41,145 @@ export default function Login() {
     }
     if (!formData.password) {
       newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
     if (Object.keys(newErrors).length === 0) {
-      setIsLoading(true);
+      // Handle form submission
+      console.log('Form submitted:', formData);
       // Here you would typically make an API call
-      console.log('Login attempt:', formData);
-      // Simulate login delay
-      setTimeout(() => {
-        setIsLoading(false);
-        // Handle successful login or redirect
-      }, 1500);
     } else {
       setErrors(newErrors);
     }
   };
+
+  // Ball animation and border drawing/erasing
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    const rect = container.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const perimeter = 2 * (width + height);
+    const totalSteps = 200; // For smooth movement
+    const segmentLength = perimeter / totalSteps;
+    const speed = segmentLength / 0.05; // 50ms interval
+
+    const getPosition = (step: number) => {
+      const progress = (step % totalSteps) / totalSteps;
+      const totalDistance = progress * perimeter;
+
+      // Top edge: 0 to width
+      if (totalDistance <= width) {
+        return { x: totalDistance, y: 0 };
+      }
+      // Right edge: width to width + height
+      else if (totalDistance <= width + height) {
+        return { x: width, y: totalDistance - width };
+      }
+      // Bottom edge: width + height to 2*width + height
+      else if (totalDistance <= 2 * width + height) {
+        return { x: 2 * width + height - totalDistance, y: height };
+      }
+      // Left edge: 2*width + height to 2*(width + height)
+      else {
+        return { x: 0, y: 2 * (width + height) - totalDistance };
+      }
+    };
+
+    // Calculate border visibility (drawing and erasing)
+    const getBorderStyles = (step: number) => {
+      const cycle = Math.floor(step / totalSteps); // 0 for drawing, 1 for erasing
+      const progress = (step % totalSteps) / totalSteps;
+      const totalDistance = progress * perimeter;
+
+      const borders = {
+        top: { width: 0, height: '1px' },
+        right: { width: '1px', height: 0 },
+        bottom: { width: 0, height: '1px' },
+        left: { width: '1px', height: 0 }
+      };
+
+      if (cycle === 0) {
+        // Drawing phase
+        if (totalDistance <= width) {
+          borders.top.width = totalDistance;
+        } else if (totalDistance <= width + height) {
+          borders.top.width = width;
+          borders.right.height = totalDistance - width;
+        } else if (totalDistance <= 2 * width + height) {
+          borders.top.width = width;
+          borders.right.height = height;
+          borders.bottom.width = totalDistance - (width + height);
+        } else {
+          borders.top.width = width;
+          borders.right.height = height;
+          borders.bottom.width = width;
+          borders.left.height = totalDistance - (2 * width + height);
+        }
+      } else {
+        // Erasing phase
+        const eraseDistance = totalDistance;
+        if (eraseDistance <= width) {
+          borders.top.width = width - eraseDistance;
+          borders.right.height = height;
+          borders.bottom.width = width;
+          borders.left.height = height;
+        } else if (eraseDistance <= width + height) {
+          borders.top.width = 0;
+          borders.right.height = height - (eraseDistance - width);
+          borders.bottom.width = width;
+          borders.left.height = height;
+        } else if (eraseDistance <= 2 * width + height) {
+          borders.top.width = 0;
+          borders.right.height = 0;
+          borders.bottom.width = width - (eraseDistance - (width + height));
+          borders.left.height = height;
+        } else {
+          borders.top.width = 0;
+          borders.right.height = 0;
+          borders.bottom.width = 0;
+          borders.left.height = height - (eraseDistance - (2 * width + height));
+        }
+      }
+
+      return borders;
+    };
+
+    const interval = setInterval(() => {
+      setStep(prev => (prev + 1) % (totalSteps * 2)); // Double steps for draw + erase cycle
+      const { x, y } = getPosition(step);
+      setBallPosition({ x, y });
+    }, 50); // Fast and smooth
+
+    // Update border styles
+    const updateBorders = () => {
+      const borders = getBorderStyles(step);
+      if (containerRef.current) {
+        const topBorder = containerRef.current.querySelector('.border-top');
+        const rightBorder = containerRef.current.querySelector('.border-right');
+        const bottomBorder = containerRef.current.querySelector('.border-bottom');
+        const leftBorder = containerRef.current.querySelector('.border-left');
+        if (topBorder) topBorder.style.width = `${borders.top.width}px`;
+        if (rightBorder) rightBorder.style.height = `${borders.right.height}px`;
+        if (bottomBorder) bottomBorder.style.width = `${borders.bottom.width}px`;
+        if (leftBorder) leftBorder.style.height = `${borders.left.height}px`;
+      }
+    };
+
+    updateBorders();
+    const borderInterval = setInterval(updateBorders, 50);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(borderInterval);
+    };
+  }, [step]);
 
   return (
     <div className="min-h-screen bg-black">
@@ -56,19 +187,55 @@ export default function Login() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8 sm:mb-10">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold font-mono text-[#E70008] mb-4">
-              Welcome Back
+              Create Account
             </h1>
             <p className="text-[#F9E4AD] font-mono text-sm sm:text-base">
-              Sign in to your Magna Coders account
+              Join the Magna Coders community
             </p>
           </div>
 
-          <div className="border border-[#E70008] rounded-lg p-6 sm:p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="relative p-6 sm:p-8 rounded-lg overflow-hidden" ref={containerRef}>
+            {/* Border segments */}
+            <div
+              className="absolute border-top bg-[#E70008]"
+              style={{ top: 0, left: 0, height: '1px', transition: 'width 0.3s ease-out' }}
+            />
+            <div
+              className="absolute border-right bg-[#E70008]"
+              style={{ top: 0, right: 0, width: '1px', transition: 'height 0.3s ease-out' }}
+            />
+            <div
+              className="absolute border-bottom bg-[#E70008]"
+              style={{ bottom: 0, right: 0, height: '1px', transition: 'width 0.3s ease-out' }}
+            />
+            <div
+              className="absolute border-left bg-[#E70008]"
+              style={{ bottom: 0, left: 0, width: '1px', transition: 'height 0.3s ease-out' }}
+            />
+
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+              {/* Username */}
+              <div>
+                <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 bg-black border border-[#E70008] rounded-md text-[#F9E4AD] font-mono placeholder-[#F9E4AD]/50 focus:outline-none focus:border-[#FF9940] focus:ring-1 focus:ring-[#FF9940]"
+                  placeholder="Enter your username"
+                />
+                {errors.username && (
+                  <p className="text-[#E70008] font-mono text-xs mt-1">{errors.username}</p>
+                )}
+              </div>
+
               {/* Email */}
               <div>
                 <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
-                  Email Address
+                  Email
                 </label>
                 <input
                   type="email"
@@ -81,6 +248,24 @@ export default function Login() {
                 {errors.email && (
                   <p className="text-[#E70008] font-mono text-xs mt-1">{errors.email}</p>
                 )}
+              </div>
+
+              {/* Role */}
+              <div>
+                <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
+                  Role
+                </label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 bg-black border border-[#E70008] rounded-md text-[#F9E4AD] font-mono focus:outline-none focus:border-[#FF9940] focus:ring-1 focus:ring-[#FF9940]"
+                >
+                  <option value="developer">Developer</option>
+                  <option value="designer">Designer</option>
+                  <option value="problem-solver">Problem Solver</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
 
               {/* Password */}
@@ -101,66 +286,51 @@ export default function Login() {
                 )}
               </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 bg-black border border-[#E70008] rounded text-[#E70008] focus:ring-[#FF9940] focus:ring-offset-black"
-                  />
-                  <span className="ml-2 text-sm text-[#F9E4AD] font-mono">
-                    Remember me
-                  </span>
+              {/* Confirm Password */}
+              <div>
+                <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
+                  Confirm Password
                 </label>
-                <Link 
-                  href="/forgot-password" 
-                  className="text-sm text-[#FF9940] hover:text-[#E70008] font-mono"
-                >
-                  Forgot password?
-                </Link>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 bg-black border border-[#E70008] rounded-md text-[#F9E4AD] font-mono placeholder-[#F9E4AD]/50 focus:outline-none focus:border-[#FF9940] focus:ring-1 focus:ring-[#FF9940]"
+                  placeholder="Confirm your password"
+                />
+                {errors.confirmPassword && (
+                  <p className="text-[#E70008] font-mono text-xs mt-1">{errors.confirmPassword}</p>
+                )}
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isLoading}
-                className="w-full py-3 px-4 bg-[#E70008] hover:bg-[#FF9940] text-black font-mono font-bold rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#FF9940] focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 px-4 bg-[#E70008] hover:bg-[#FF9940] text-black font-mono font-bold rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#FF9940] focus:ring-offset-2 focus:ring-offset-black"
               >
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                Create Account
               </button>
             </form>
 
-            {/* Social Login Options */}
-            <div className="mt-6">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-[#E70008]/30"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-black text-[#F9E4AD] font-mono">
-                    Or continue with
-                  </span>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <button className="w-full inline-flex justify-center py-2 px-4 border border-[#E70008] rounded-md shadow-sm bg-black text-sm font-medium text-[#F9E4AD] font-mono hover:bg-[#E70008]/10">
-                  GitHub
-                </button>
-                <button className="w-full inline-flex justify-center py-2 px-4 border border-[#E70008] rounded-md shadow-sm bg-black text-sm font-medium text-[#F9E4AD] font-mono hover:bg-[#E70008]/10">
-                  Google
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center relative z-10">
               <p className="text-[#F9E4AD] font-mono text-sm">
-                Don't have an account?{' '}
-                <Link href="/create-account" className="text-[#FF9940] hover:text-[#E70008] font-mono">
-                  Create account
-                </Link>
+                Already have an account?{' '}
+                <a href="/login" className="text-[#FF9940] hover:text-[#E70008] font-mono">
+                  Sign in
+                </a>
               </p>
             </div>
+
+            {/* Bouncing cream ball along perimeter */}
+            <div
+              className="absolute w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-[#F9E4AD] rounded-full transition-all duration-300 ease-out"
+              style={{
+                left: `${ballPosition.x}px`,
+                top: `${ballPosition.y}px`,
+                transform: 'translate(-50%, -50%)'
+              }}
+            />
           </div>
         </div>
       </div>
