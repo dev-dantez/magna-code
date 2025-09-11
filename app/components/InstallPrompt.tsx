@@ -28,7 +28,7 @@ export default function InstallPrompt() {
     // Check if app is already installed (standalone mode)
     setIsStandalone(
       window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone ||
+      (window.navigator as { standalone?: boolean }).standalone === true ||
       document.referrer.includes('android-app://')
     );
 
@@ -36,14 +36,15 @@ export default function InstallPrompt() {
     setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
 
     // Listen for the beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+    const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      const installEvent = e as BeforeInstallPromptEvent;
+      setDeferredPrompt(installEvent);
       // Show prompt after a short delay
       setTimeout(() => setShowPrompt(true), 1000);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt as any);
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     // For iOS, check if it's not already installed
     if (isIOS && !isStandalone && !isInStandaloneMode()) {
@@ -51,18 +52,18 @@ export default function InstallPrompt() {
     }
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt as any);
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, [isIOS, isStandalone]);
 
-  const isInStandaloneMode = () => {
+  const isInStandaloneMode = (): boolean => {
     return (
       window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone
+      (window.navigator as { standalone?: boolean }).standalone === true
     );
   };
 
-  const handleInstallClick = async () => {
+  const handleInstallClick = async (): Promise<void> => {
     if (!deferredPrompt) {
       // For iOS Safari
       alert(
@@ -90,7 +91,7 @@ export default function InstallPrompt() {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setShowPrompt(false);
   };
 
@@ -122,6 +123,7 @@ export default function InstallPrompt() {
             <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Close install prompt"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
