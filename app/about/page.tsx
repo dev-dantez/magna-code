@@ -28,7 +28,7 @@ export default function AboutUs() {
         if (containerRect) {
           setBallPosition({
             x: rect.left - containerRect.left + rect.width / 2,
-            y: rect.top - containerRect.top - 12
+            y: rect.top - containerRect.top // Position ball to touch top of letter
           });
         }
       }
@@ -47,9 +47,7 @@ export default function AboutUs() {
               {letters.map((letter, index) => (
                 <span
                   key={index}
-                  ref={(el) => {
-                    letterRefs.current[index] = el;
-                  }}
+                  ref={el => letterRefs.current[index] = el}
                   className={`transition-colors duration-200 px-0.5 sm:px-1 ${
                     index === currentIndex 
                       ? 'text-[#E70008]' 
@@ -60,10 +58,10 @@ export default function AboutUs() {
                 </span>
               ))}
               
-              {/* Bouncing red ball - responsive sizing */}
+              {/* Bouncing red ball - responsive sizing with smooth position transition */}
               <div 
-                className={`absolute w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-[#E70008] rounded-full transition-all duration-200 ease-in-out ${
-                  isBouncing ? 'scale-150 translate-y-[-3px] sm:translate-y-[-4px] md:translate-y-[-5px]' : 'scale-100 translate-y-0'
+                className={`absolute w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-[#E70008] rounded-full transition-all duration-300 ease-out ${
+                  isBouncing ? 'scale-150 translate-y-[-2px] sm:translate-y-[-3px] md:translate-y-[-4px]' : 'scale-100 translate-y-0'
                 }`}
                 style={{
                   left: `${ballPosition.x}px`,
