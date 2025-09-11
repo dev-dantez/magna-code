@@ -1,6 +1,5 @@
 'use client';
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import PWAInstaller from "./components/PWAInstaller";
 
@@ -61,7 +60,7 @@ export default function Home() {
     }, 6000);
 
     return () => clearInterval(titleInterval);
-  }, []);
+  }, [titles.length]);
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black">
