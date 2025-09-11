@@ -100,6 +100,15 @@ export default function Home() {
         </div>
       </main>
       
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20">
+        <a 
+          href="/about" 
+          className="px-6 py-2 bg-[#E70008] text-[#F9E4AD] font-bold rounded-full hover:bg-[#D60007] transition-colors duration-200 shadow-lg"
+        >
+          About Us
+        </a>
+      </div>
+      
       <PWAInstaller />
     </div>
   );
