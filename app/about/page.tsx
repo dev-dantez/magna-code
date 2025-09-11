@@ -47,7 +47,9 @@ export default function AboutUs() {
               {letters.map((letter, index) => (
                 <span
                   key={index}
-                  ref={el => letterRefs.current[index] = el}
+                  ref={(el) => {
+                    letterRefs.current[index] = el;
+                  }}
                   className={`transition-colors duration-200 px-0.5 sm:px-1 ${
                     index === currentIndex 
                       ? 'text-[#E70008]' 
