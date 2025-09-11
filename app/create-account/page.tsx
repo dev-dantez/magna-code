@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function CreateAccount() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,9 @@ export default function CreateAccount() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [ballPosition, setBallPosition] = useState({ x: 0, y: 0 });
+  const [step, setStep] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -54,6 +57,50 @@ export default function CreateAccount() {
     }
   };
 
+  // Ball animation along the perimeter
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    const rect = container.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const perimeter = 2 * (width + height); // Total perimeter length
+    const totalSteps = 200; // Increased for smoother movement
+    const segmentLength = perimeter / totalSteps;
+    const speed = segmentLength / 0.05; // Match 50ms interval
+
+    const getPosition = (step: number) => {
+      const progress = (step % totalSteps) / totalSteps; // Normalize to 0-1
+      const totalDistance = progress * perimeter;
+
+      // Top edge: 0 to width
+      if (totalDistance <= width) {
+        return { x: totalDistance, y: 0 };
+      }
+      // Right edge: width to width + height
+      else if (totalDistance <= width + height) {
+        return { x: width, y: totalDistance - width };
+      }
+      // Bottom edge: width + height to 2*width + height
+      else if (totalDistance <= 2 * width + height) {
+        return { x: 2 * width + height - totalDistance, y: height };
+      }
+      // Left edge: 2*width + height to 2*(width + height)
+      else {
+        return { x: 0, y: 2 * (width + height) - totalDistance };
+      }
+    };
+
+    const interval = setInterval(() => {
+      setStep(prev => (prev + 1) % totalSteps);
+      const { x, y } = getPosition(step);
+      setBallPosition({ x, y });
+    }, 50); // Faster interval for smoother and quicker movement
+
+    return () => clearInterval(interval);
+  }, [step]);
+
   return (
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
@@ -67,7 +114,7 @@ export default function CreateAccount() {
             </p>
           </div>
 
-          <div className="border border-[#E70008] rounded-lg p-6 sm:p-8">
+          <div className="border border-[#E70008] rounded-lg p-6 sm:p-8 relative" ref={containerRef}>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Username */}
               <div>
@@ -176,6 +223,16 @@ export default function CreateAccount() {
                 </a>
               </p>
             </div>
+
+            {/* Bouncing cream ball along perimeter */}
+            <div
+              className="absolute w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3 bg-[#F9E4AD] rounded-full transition-all duration-300 ease-out"
+              style={{
+                left: `${ballPosition.x}px`,
+                top: `${ballPosition.y}px`,
+                transform: 'translate(-50%, -50%)'
+              }}
+            />
           </div>
         </div>
       </div>
