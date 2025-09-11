@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 export default function AboutUs() {
   // States for "Magna Coders" title
@@ -112,6 +112,18 @@ export default function AboutUs() {
   const existTitle = "Why We Exist";
   const existLetters = existTitle.split('');
 
+  const setLetterRef = useCallback((index: number) => (el: HTMLSpanElement | null) => {
+    letterRefs.current[index] = el;
+  }, []);
+
+  const setStoryLetterRef = useCallback((index: number) => (el: HTMLSpanElement | null) => {
+    storyLetterRefs.current[index] = el;
+  }, []);
+
+  const setExistLetterRef = useCallback((index: number) => (el: HTMLSpanElement | null) => {
+    existLetterRefs.current[index] = el;
+  }, []);
+
   return (
     <div className="min-h-screen bg-black">
       <div className="container mx-auto px-4 py-8 sm:py-12 md:py-16">
@@ -121,7 +133,7 @@ export default function AboutUs() {
               {letters.map((letter, index) => (
                 <span
                   key={index}
-                  ref={el => letterRefs.current[index] = el}
+                  ref={setLetterRef(index)}
                   className={`transition-colors duration-200 px-0.5 sm:px-1 ${
                     index === currentIndex 
                       ? 'text-[#E70008]' 
@@ -182,7 +194,7 @@ export default function AboutUs() {
                   {storyLetters.map((letter, index) => (
                     <span
                       key={index}
-                      ref={el => storyLetterRefs.current[index] = el}
+                      ref={setStoryLetterRef(index)}
                       className={`transition-colors duration-200 px-0.5 sm:px-1 ${
                         index === storyIndex 
                           ? 'text-[#E70008]' 
@@ -233,7 +245,7 @@ export default function AboutUs() {
                   {existLetters.map((letter, index) => (
                     <span
                       key={index}
-                      ref={el => existLetterRefs.current[index] = el}
+                      ref={setExistLetterRef(index)}
                       className={`transition-colors duration-200 px-0.5 sm:px-1 ${
                         index === existIndex 
                           ? 'text-[#E70008]' 
