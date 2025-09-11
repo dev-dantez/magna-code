@@ -57,7 +57,7 @@ export default function CreateAccount() {
     }
   };
 
-  // Ball animation along the perimeter
+  // Ball animation and border drawing/erasing
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -65,13 +65,13 @@ export default function CreateAccount() {
     const rect = container.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const perimeter = 2 * (width + height); // Total perimeter length
-    const totalSteps = 200; // Increased for smoother movement
+    const perimeter = 2 * (width + height);
+    const totalSteps = 200; // For smooth movement
     const segmentLength = perimeter / totalSteps;
-    const speed = segmentLength / 0.05; // Match 50ms interval
+    const speed = segmentLength / 0.05; // 50ms interval
 
     const getPosition = (step: number) => {
-      const progress = (step % totalSteps) / totalSteps; // Normalize to 0-1
+      const progress = (step % totalSteps) / totalSteps;
       const totalDistance = progress * perimeter;
 
       // Top edge: 0 to width
@@ -92,13 +92,93 @@ export default function CreateAccount() {
       }
     };
 
+    // Calculate border visibility (drawing and erasing)
+    const getBorderStyles = (step: number) => {
+      const cycle = Math.floor(step / totalSteps); // 0 for drawing, 1 for erasing
+      const progress = (step % totalSteps) / totalSteps;
+      const totalDistance = progress * perimeter;
+
+      const borders = {
+        top: { width: 0, height: '1px' },
+        right: { width: '1px', height: 0 },
+        bottom: { width: 0, height: '1px' },
+        left: { width: '1px', height: 0 }
+      };
+
+      if (cycle === 0) {
+        // Drawing phase
+        if (totalDistance <= width) {
+          borders.top.width = totalDistance;
+        } else if (totalDistance <= width + height) {
+          borders.top.width = width;
+          borders.right.height = totalDistance - width;
+        } else if (totalDistance <= 2 * width + height) {
+          borders.top.width = width;
+          borders.right.height = height;
+          borders.bottom.width = totalDistance - (width + height);
+        } else {
+          borders.top.width = width;
+          borders.right.height = height;
+          borders.bottom.width = width;
+          borders.left.height = totalDistance - (2 * width + height);
+        }
+      } else {
+        // Erasing phase
+        const eraseDistance = totalDistance;
+        if (eraseDistance <= width) {
+          borders.top.width = width - eraseDistance;
+          borders.right.height = height;
+          borders.bottom.width = width;
+          borders.left.height = height;
+        } else if (eraseDistance <= width + height) {
+          borders.top.width = 0;
+          borders.right.height = height - (eraseDistance - width);
+          borders.bottom.width = width;
+          borders.left.height = height;
+        } else if (eraseDistance <= 2 * width + height) {
+          borders.top.width = 0;
+          borders.right.height = 0;
+          borders.bottom.width = width - (eraseDistance - (width + height));
+          borders.left.height = height;
+        } else {
+          borders.top.width = 0;
+          borders.right.height = 0;
+          borders.bottom.width = 0;
+          borders.left.height = height - (eraseDistance - (2 * width + height));
+        }
+      }
+
+      return borders;
+    };
+
     const interval = setInterval(() => {
-      setStep(prev => (prev + 1) % totalSteps);
+      setStep(prev => (prev + 1) % (totalSteps * 2)); // Double steps for draw + erase cycle
       const { x, y } = getPosition(step);
       setBallPosition({ x, y });
-    }, 50); // Faster interval for smoother and quicker movement
+    }, 50); // Fast and smooth
 
-    return () => clearInterval(interval);
+    // Update border styles
+    const updateBorders = () => {
+      const borders = getBorderStyles(step);
+      if (containerRef.current) {
+        const topBorder = containerRef.current.querySelector('.border-top');
+        const rightBorder = containerRef.current.querySelector('.border-right');
+        const bottomBorder = containerRef.current.querySelector('.border-bottom');
+        const leftBorder = containerRef.current.querySelector('.border-left');
+        if (topBorder) topBorder.style.width = `${borders.top.width}px`;
+        if (rightBorder) rightBorder.style.height = `${borders.right.height}px`;
+        if (bottomBorder) bottomBorder.style.width = `${borders.bottom.width}px`;
+        if (leftBorder) leftBorder.style.height = `${borders.left.height}px`;
+      }
+    };
+
+    updateBorders();
+    const borderInterval = setInterval(updateBorders, 50);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(borderInterval);
+    };
   }, [step]);
 
   return (
@@ -114,8 +194,26 @@ export default function CreateAccount() {
             </p>
           </div>
 
-          <div className="border border-[#E70008] rounded-lg p-6 sm:p-8 relative" ref={containerRef}>
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="relative p-6 sm:p-8 rounded-lg overflow-hidden" ref={containerRef}>
+            {/* Border segments */}
+            <div
+              className="absolute border-top bg-[#E70008]"
+              style={{ top: 0, left: 0, height: '1px', transition: 'width 0.3s ease-out' }}
+            />
+            <div
+              className="absolute border-right bg-[#E70008]"
+              style={{ top: 0, right: 0, width: '1px', transition: 'height 0.3s ease-out' }}
+            />
+            <div
+              className="absolute border-bottom bg-[#E70008]"
+              style={{ bottom: 0, right: 0, height: '1px', transition: 'width 0.3s ease-out' }}
+            />
+            <div
+              className="absolute border-left bg-[#E70008]"
+              style={{ bottom: 0, left: 0, width: '1px', transition: 'height 0.3s ease-out' }}
+            />
+
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               {/* Username */}
               <div>
                 <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
@@ -215,7 +313,7 @@ export default function CreateAccount() {
               </button>
             </form>
 
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center relative z-10">
               <p className="text-[#F9E4AD] font-mono text-sm">
                 Already have an account?{' '}
                 <a href="/login" className="text-[#FF9940] hover:text-[#E70008] font-mono">
