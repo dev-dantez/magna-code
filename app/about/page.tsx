@@ -73,29 +73,31 @@ export default function AboutUs() {
           </div>
           
           <div className="text-center max-w-3xl mx-auto px-2">
-            <p className="text-lg sm:text-xl md:text-2xl text-[#F9E4AD] font-mono leading-relaxed px-4 mb-6 sm:mb-8">
-              Magna Coders is more than just a platform — it's a community of builders.
-            </p>
-            
-            <div className="text-left max-w-2xl mx-auto px-4">
-              <p className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed mb-4 sm:mb-6">
-                Here, developers, designers, and problem-solvers come together to:
+            <div className="border border-[#E70008] rounded-lg p-4 sm:p-6 md:p-8 mx-2 sm:mx-4">
+              <p className="text-lg sm:text-xl md:text-2xl text-[#F9E4AD] font-mono leading-relaxed mb-6 sm:mb-8">
+                Magna Coders is more than just a platform — it's a community of builders.
               </p>
               
-              <ul className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed space-y-2 sm:space-y-3">
-                <li className="flex items-start">
-                  <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
-                  <span>Showcase their skills.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
-                  <span>Form dynamic teams.</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
-                  <span>Build real solutions for real problems.</span>
-                </li>
-              </ul>
+              <div className="text-left max-w-2xl mx-auto">
+                <p className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed mb-4 sm:mb-6">
+                  Here, developers, designers, and problem-solvers come together to:
+                </p>
+                
+                <ul className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed space-y-2 sm:space-y-3">
+                  <li className="flex items-start">
+                    <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
+                    <span>Showcase their skills.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
+                    <span>Form dynamic teams.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
+                    <span>Build real solutions for real problems.</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
