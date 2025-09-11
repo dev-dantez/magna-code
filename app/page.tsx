@@ -90,10 +90,10 @@ export default function Home() {
           </p>
           
           <div className="flex gap-6 justify-center">
-            <button className="px-8 py-3 bg-[#E70008] text-white font-semibold rounded-full hover:bg-[#D60007] transform hover:scale-105 transition-all duration-200 shadow-lg font-sans">
+            <button className="px-8 py-3 bg-[#E70008] text-[#F9E4AD] font-bold rounded-full hover:bg-[#D60007] transform hover:scale-105 transition-all duration-200 shadow-lg font-sans">
               Start Building
             </button>
-            <button className="px-8 py-3 border-2 border-[#E70008] text-[#E70008] font-semibold rounded-full hover:bg-[#E70008] hover:text-white transform hover:scale-105 transition-all duration-200 font-sans">
+            <button className="px-8 py-3 border-2 border-[#E70008] text-[#F9E4AD] font-bold rounded-full hover:bg-[#E70008] hover:text-[#F9E4AD] transform hover:scale-105 transition-all duration-200 font-sans">
               Join Community
             </button>
           </div>
