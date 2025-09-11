@@ -75,7 +75,7 @@ export default function AboutUs() {
           <div className="text-center max-w-3xl mx-auto px-2">
             <div className="border border-[#E70008] rounded-lg p-4 sm:p-6 md:p-8 mx-2 sm:mx-4">
               <p className="text-lg sm:text-xl md:text-2xl text-[#F9E4AD] font-mono leading-relaxed mb-6 sm:mb-8">
-                Magna Coders is more than just a platform — it's a community of builders.
+                Magna Coders is more than just a platform — it&apos;s a community of builders.
               </p>
               
               <div className="text-left max-w-2xl mx-auto">
