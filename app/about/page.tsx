@@ -72,7 +72,8 @@ export default function AboutUs() {
             </h1>
           </div>
           
-          <div className="text-center max-w-3xl mx-auto px-2">
+          <div className="text-center max-w-3xl mx-auto px-2 space-y-6 sm:space-y-8">
+            {/* First Section */}
             <div className="border border-[#E70008] rounded-lg p-4 sm:p-6 md:p-8 mx-2 sm:mx-4">
               <p className="text-lg sm:text-xl md:text-2xl text-[#F9E4AD] font-mono leading-relaxed mb-6 sm:mb-8">
                 Magna Coders is more than just a platform — it&apos;s a community of builders.
@@ -97,6 +98,31 @@ export default function AboutUs() {
                     <span>Build real solutions for real problems.</span>
                   </li>
                 </ul>
+              </div>
+            </div>
+
+            {/* Our Story Section */}
+            <div className="border border-[#E70008] rounded-lg p-4 sm:p-6 md:p-8 mx-2 sm:mx-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#E70008] font-mono mb-4 sm:mb-6">
+                Our Story
+              </h2>
+              
+              <div className="text-left">
+                <p className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed mb-4">
+                  This project began with a simple question:
+                </p>
+                
+                <p className="text-base sm:text-lg text-[#F9E4AD] font-mono italic leading-relaxed mb-4 pl-4 border-l-2 border-[#E70008]">
+                  &ldquo;What if a group of people could come together, find a problem in society, and solve it with technology?&rdquo;
+                </p>
+                
+                <p className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed mb-4">
+                  From that spark, Magna Coders was born.
+                </p>
+                
+                <p className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed">
+                  What started as a small gathering of ideas is now evolving into a living ecosystem of skills, collaboration, and impact.
+                </p>
               </div>
             </div>
           </div>
