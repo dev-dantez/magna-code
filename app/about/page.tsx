@@ -125,6 +125,30 @@ export default function AboutUs() {
                 </p>
               </div>
             </div>
+
+            {/* Why We Exist Section */}
+            <div className="border border-[#E70008] rounded-lg p-4 sm:p-6 md:p-8 mx-2 sm:mx-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#E70008] font-mono mb-4 sm:mb-6">
+                Why We Exist
+              </h2>
+              
+              <div className="text-left max-w-2xl mx-auto">
+                <ul className="text-base sm:text-lg text-[#F9E4AD] font-mono leading-relaxed space-y-4 sm:space-y-5">
+                  <li className="flex items-start">
+                    <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
+                    <span>To break the cycle of isolation and fragmented talent.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
+                    <span>To give every coder, designer, and thinker a place to belong and contribute.</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-[#E70008] mr-2 sm:mr-3">•</span>
+                    <span>To turn scattered energy into coherent teams solving meaningful problems.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
