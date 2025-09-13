@@ -8,7 +8,8 @@ export default function CreateAccount() {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'developer'
+    selectedCategories: [] as string[],
+    selectedRoles: [] as string[]
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -24,6 +25,61 @@ export default function CreateAccount() {
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setFormData(prev => {
+      const newCategories = prev.selectedCategories.includes(category)
+        ? prev.selectedCategories.filter(c => c !== category)
+        : [...prev.selectedCategories, category];
+      
+      // Remove roles from deselected categories
+      const newRoles = prev.selectedRoles.filter(role => {
+        const categoryData = roleCategories[category as keyof typeof roleCategories];
+        return !categoryData || newCategories.some(cat => 
+          roleCategories[cat as keyof typeof roleCategories]?.includes(role)
+        );
+      });
+      
+      return {
+        ...prev,
+        selectedCategories: newCategories,
+        selectedRoles: newRoles
+      };
+    });
+  };
+
+  const handleRoleChange = (role: string) => {
+    setFormData(prev => ({
+      ...prev,
+      selectedRoles: prev.selectedRoles.includes(role)
+        ? prev.selectedRoles.filter(r => r !== role)
+        : [...prev.selectedRoles, role]
+    }));
+  };
+
+  const roleCategories = {
+    "Developer": [
+      "Frontend Developer", "Backend Developer", "Fullstack Developer", "Mobile App Developer",
+      "DevOps Engineer", "Data Engineer", "AI/ML Engineer", "Blockchain Developer",
+      "Game Developer", "Embedded Systems Developer"
+    ],
+    "Designer": [
+      "UI Designer", "UX Designer", "Product Designer", "Graphic Designer",
+      "Motion Designer", "Web Designer", "Branding/Identity Designer"
+    ],
+    "Research/Analyst": [
+      "Data Scientist", "Data Analyst", "Business Analyst", "Market Researcher",
+      "QA/Test Engineer", "User Researcher", "Security Analyst"
+    ],
+    "Business/Strategy": [
+      "Project Manager", "Product Manager", "Business Development", "Marketing Specialist",
+      "Sales & Partnerships", "Finance & Operations", "Legal/Compliance Advisor"
+    ],
+    "Support": [
+      "Community Manager", "Technical Writer", "Content Creator", "Mentor/Coach",
+      "Customer Support", "Recruiter/Talent Scout", "Educator/Trainer"
+    ]
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,6 +102,12 @@ export default function CreateAccount() {
     }
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
+    }
+    if (formData.selectedCategories.length === 0) {
+      newErrors.categories = 'Please select at least one category';
+    }
+    if (formData.selectedRoles.length === 0) {
+      newErrors.roles = 'Please select at least one role';
     }
 
     if (Object.keys(newErrors).length === 0) {
@@ -252,23 +314,64 @@ export default function CreateAccount() {
                 )}
               </div>
 
-              {/* Role */}
+              {/* Categories */}
               <div>
                 <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
-                  Role
+                  Categories (Select all that apply)
                 </label>
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 bg-black border border-[#E70008] rounded-md text-[#F9E4AD] font-mono focus:outline-none focus:border-[#FF9940] focus:ring-1 focus:ring-[#FF9940]"
-                >
-                  <option value="developer">Developer</option>
-                  <option value="designer">Designer</option>
-                  <option value="problem-solver">Problem Solver</option>
-                  <option value="other">Other</option>
-                </select>
+                <div className="relative p-4 border border-[#E70008] rounded-md">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {Object.keys(roleCategories).map((category) => (
+                      <label key={category} className="flex items-center space-x-2 cursor-pointer hover:bg-[#E70008]/10 p-2 rounded transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={formData.selectedCategories.includes(category)}
+                          onChange={() => handleCategoryChange(category)}
+                          className="w-4 h-4 text-[#E70008] bg-black border border-[#E70008] rounded focus:ring-[#FF9940] focus:ring-1"
+                        />
+                        <span className="text-[#F9E4AD] font-mono text-sm">{category}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                {errors.categories && (
+                  <p className="text-[#E70008] font-mono text-xs mt-1">{errors.categories}</p>
+                )}
               </div>
+
+              {/* Roles */}
+              {formData.selectedCategories.length > 0 && (
+                <div>
+                  <label className="block text-[#F9E4AD] font-mono text-sm font-medium mb-2">
+                    Roles (Select all that apply)
+                  </label>
+                  <div className="space-y-4">
+                    {formData.selectedCategories.map((category) => (
+                      <div key={category}>
+                        <h4 className="text-[#FF9940] font-mono text-sm font-semibold mb-2">
+                          {category}
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {roleCategories[category as keyof typeof roleCategories]?.map((role) => (
+                            <label key={role} className="flex items-center space-x-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={formData.selectedRoles.includes(role)}
+                                onChange={() => handleRoleChange(role)}
+                                className="w-4 h-4 text-[#E70008] bg-black border border-[#E70008] rounded focus:ring-[#FF9940] focus:ring-1"
+                              />
+                              <span className="text-[#F9E4AD] font-mono text-xs">{role}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {errors.roles && (
+                    <p className="text-[#E70008] font-mono text-xs mt-1">{errors.roles}</p>
+                  )}
+                </div>
+              )}
 
               {/* Password */}
               <div>
