@@ -147,7 +147,7 @@ export default function HomeDashboard() {
       }
 
       // Fetch user skills (handle missing table gracefully)
-      let skillsData = [];
+      let skillsData: { skill_name: string }[] = [];
       try {
         const { data: skills, error: skillsError } = await supabase
           .from('user_skills')
