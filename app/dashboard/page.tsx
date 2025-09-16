@@ -485,7 +485,7 @@ export default function HomeDashboard() {
                   Skills
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                    {user?.skills?.length > 0 ? (
+                    {user && user.skills.length > 0 ? (
                       user.skills.map((skill, index) => (
                         <span key={index} className="px-3 py-1 bg-[#FF9940]/20 text-[#F9E4AD] font-mono text-xs rounded-full border border-[#FF9940]/30">
                           {skill}
