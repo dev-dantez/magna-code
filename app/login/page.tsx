@@ -63,13 +63,19 @@ export default function Login() {
     } catch (error: unknown) {
       console.error('Login error:', error);
       // Handle specific Supabase errors
-      if (typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string') {
-        if ((error as any).message.includes('Invalid login credentials')) {
+      if (
+        typeof error === 'object' &&
+        error !== null &&
+        'message' in error &&
+        typeof (error as { message?: string }).message === 'string'
+      ) {
+        const errorMessage = (error as { message: string }).message;
+        if (errorMessage.includes('Invalid login credentials')) {
           setErrors({ submit: 'Invalid email or password.' });
-        } else if ((error as any).message.includes('Email not confirmed')) {
+        } else if (errorMessage.includes('Email not confirmed')) {
           setErrors({ submit: 'Please confirm your email before logging in.' });
         } else {
-          setErrors({ submit: (error as any).message || 'Login failed. Please try again.' });
+          setErrors({ submit: errorMessage || 'Login failed. Please try again.' });
         }
       } else {
         setErrors({ submit: 'Login failed. Please try again.' });
