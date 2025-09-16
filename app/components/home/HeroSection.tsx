@@ -128,7 +128,7 @@ export default function HeroSection() {
 
         {/* Terminal cycling lines */}
         <div className="mt-5 font-mono text-sm sm:text-base text-left max-w-2xl mx-auto text-white/80">
-          <div className="terminal-line fade-slide">{commands[cmdIndex]}</div>
+          <div key={cmdIndex} className="terminal-line fade-slide">{commands[cmdIndex]}</div>
         </div>
 
         <div className="mt-10 flex items-center justify-center gap-4 sm:gap-6">
