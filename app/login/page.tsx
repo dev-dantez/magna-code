@@ -60,16 +60,19 @@ export default function Login() {
         // Successful login - redirect to dashboard
         router.push('/dashboard');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Login error:', error);
-      
       // Handle specific Supabase errors
-      if (error.message?.includes('Invalid login credentials')) {
-        setErrors({ submit: 'Invalid email or password.' });
-      } else if (error.message?.includes('Email not confirmed')) {
-        setErrors({ submit: 'Please confirm your email before logging in.' });
+      if (typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string') {
+        if ((error as any).message.includes('Invalid login credentials')) {
+          setErrors({ submit: 'Invalid email or password.' });
+        } else if ((error as any).message.includes('Email not confirmed')) {
+          setErrors({ submit: 'Please confirm your email before logging in.' });
+        } else {
+          setErrors({ submit: (error as any).message || 'Login failed. Please try again.' });
+        }
       } else {
-        setErrors({ submit: error.message || 'Login failed. Please try again.' });
+        setErrors({ submit: 'Login failed. Please try again.' });
       }
     } finally {
       setIsLoading(false);
@@ -144,7 +147,7 @@ export default function Login() {
 
             <div className="mt-6 text-center">
               <p className="text-[#F9E4AD] font-mono text-sm">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/create-account" className="text-[#FF9940] hover:text-[#E70008] font-mono">
                   Create account
                 </Link>

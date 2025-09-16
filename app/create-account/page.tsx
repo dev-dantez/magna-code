@@ -191,16 +191,19 @@ export default function CreateAccount() {
         // Success - redirect to dashboard
         router.push('/dashboard');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Registration error:', error);
-      
       // Handle specific Supabase errors
-      if (error.message?.includes('already registered')) {
-        setErrors({ submit: 'An account with this email already exists.' });
-      } else if (error.message?.includes('username')) {
-        setErrors({ submit: 'This username is already taken.' });
+      if (typeof error === 'object' && error !== null && 'message' in error && typeof (error as any).message === 'string') {
+        if ((error as any).message.includes('already registered')) {
+          setErrors({ submit: 'An account with this email already exists.' });
+        } else if ((error as any).message.includes('username')) {
+          setErrors({ submit: 'This username is already taken.' });
+        } else {
+          setErrors({ submit: (error as any).message || 'Registration failed. Please try again.' });
+        }
       } else {
-        setErrors({ submit: error.message || 'Registration failed. Please try again.' });
+        setErrors({ submit: 'Registration failed. Please try again.' });
       }
     } finally {
       setLoading(false);
