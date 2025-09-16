@@ -71,7 +71,6 @@ export default function HomeDashboard() {
       
       if (sessionError || !session) {
         console.error('Auth session error:', sessionError);
-        // Redirect to login page
         router.push('/login');
         return;
       }
@@ -79,7 +78,6 @@ export default function HomeDashboard() {
       const authUser = session.user;
 
       // Fetch user profile from public.users table
-      const userError = userProfileError;
       let { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, username, email, avatar_url, bio')
@@ -218,7 +216,7 @@ export default function HomeDashboard() {
     category: '',
     techStack: '',
     lookingFor: '',
-    difficulty: 'Intermediate' as const
+    difficulty: 'Intermediate' as 'Beginner' | 'Intermediate' | 'Advanced'
   });
 
   const [projects, setProjects] = useState<Project[]>([]);
@@ -297,31 +295,41 @@ export default function HomeDashboard() {
     return "bg-[#F9E4AD]";
   };
 
-  const handleCreateProject = (e: React.FormEvent) => {
+  const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const project: Project = {
-      id: Date.now().toString(),
-      title: newProject.title,
-      description: newProject.description,
-      category: newProject.category,
-      techStack: newProject.techStack.split(',').map(s => s.trim()),
-      lookingFor: newProject.lookingFor.split(',').map(s => s.trim()),
-      difficulty: newProject.difficulty,
-      status: 'open',
-      createdAt: new Date().toISOString()
-    };
-
-    setProjects(prev => [project, ...prev]);
-    setShowCreateModal(false);
-    setNewProject({
-      title: '',
-      description: '',
-      category: '',
-      techStack: '',
-      lookingFor: '',
-      difficulty: 'Intermediate'
-    });
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .insert([{
+          title: newProject.title,
+          description: newProject.description,
+          category: newProject.category,
+          tech_stack: newProject.techStack.split(',').map(s => s.trim()),
+          looking_for: newProject.lookingFor.split(',').map(s => s.trim()),
+          difficulty: newProject.difficulty,
+          status: 'open',
+          created_at: new Date().toISOString(),
+          owner_id: user?.id
+        }])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      
+      setProjects(prev => [data, ...prev]);
+      setShowCreateModal(false);
+      setNewProject({
+        title: '',
+        description: '',
+        category: '',
+        techStack: '',
+        lookingFor: '',
+        difficulty: 'Intermediate'
+      });
+    } catch (error) {
+      console.error('Error creating project:', error);
+    }
   };
 
   return (
