@@ -1,4 +1,4 @@
--- 🚨 CRITICAL FIX: Database error saving new user
+--  CRITICAL FIX: Database error saving new user
 -- This creates the missing trigger function that matches your schema
 
 -- Step 1: Drop any existing broken function
@@ -68,9 +68,9 @@ BEGIN
     
     -- Check if user was created in public.users
     IF EXISTS (SELECT 1 FROM public.users WHERE id = test_user_id) THEN
-        RAISE NOTICE '✅ SUCCESS: Trigger worked correctly!';
+        RAISE NOTICE ' SUCCESS: Trigger worked correctly!';
     ELSE
-        RAISE NOTICE '❌ FAILED: Trigger did not create user in public.users';
+        RAISE NOTICE ' FAILED: Trigger did not create user in public.users';
     END IF;
     
     -- Clean up test data

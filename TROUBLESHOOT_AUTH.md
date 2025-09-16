@@ -1,4 +1,4 @@
-# 🔧 Supabase Auth Troubleshooting Guide
+#  Supabase Auth Troubleshooting Guide
 
 ## Your Error Analysis
 The error `handleError -> _handleRequest -> _request -> SupabaseAuthClient.signUp` indicates **Supabase Auth is failing at the API level**, not your database.
@@ -92,8 +92,8 @@ curl -X POST 'https://uzsaaxuifuoimgqjxynz.supabase.co/auth/v1/signup' \
 
 ## Expected Results
 
-✅ **Working**: Should return user object with ID
-❌ **Failing**: Will show specific error message
+ **Working**: Should return user object with ID
+ **Failing**: Will show specific error message
 
 ## Next Steps After Fix
 

@@ -29,8 +29,8 @@ async function testDirectSupabase() {
             console.error('❌ Auth Error:', error.message);
             console.error('Error Details:', error);
         } else {
-            console.log('✅ Auth Success! User:', data.user);
-            console.log('✅ Session:', data.session);
+            console.log(' Auth Success! User:', data.user);
+            console.log(' Session:', data.session);
         }
 
     } catch (error) {

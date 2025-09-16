@@ -13,7 +13,7 @@ async function testSupabase() {
   try {
     // Test 1: Basic connection
     const { data, error } = await supabase.from('users').select('*').limit(1);
-    console.log('✅ Database connection:', error ? '❌ Failed' : '✅ Working');
+    console.log(' Database connection:', error ? '❌ Failed' : '✅ Working');
     if (error) console.error('Database error:', error.message);
     
     // Test 2: Auth check
@@ -23,15 +23,15 @@ async function testSupabase() {
     });
     
     if (authError) {
-      console.error('❌ Auth error:', authError.message);
+      console.error(' Auth error:', authError.message);
       console.error('Error details:', authError);
     } else {
-      console.log('✅ Auth signup working');
+      console.log(' Auth signup working');
       console.log('User ID:', authData.user?.id);
     }
     
   } catch (error) {
-    console.error('❌ Connection failed:', error);
+    console.error(' Connection failed:', error);
   }
 }
 

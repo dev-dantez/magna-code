@@ -1,4 +1,4 @@
-# 🚀 Quick Database Setup Guide
+#  Quick Database Setup Guide
 
 ## Step 1: Reset Your Database (Optional)
 If you want to start completely fresh, run this in Supabase SQL Editor:
@@ -91,9 +91,9 @@ The create account form performs these exact steps:
 
 ## Success Indicators
 
-✅ Tables appear in Supabase dashboard
-✅ No console errors in browser
-✅ User can successfully register
-✅ Data appears in all three tables
+ Tables appear in Supabase dashboard
+ No console errors in browser
+ User can successfully register
+ Data appears in all three tables
 
 The minimal schema is now ready for your create account form!
