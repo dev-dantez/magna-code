@@ -78,7 +78,7 @@ export default function HomeDashboard() {
       const authUser = session.user;
 
       // Fetch user profile from public.users table
-      let { data: userData, error: userError } = await supabase
+      const { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, username, email, avatar_url, bio')
         .eq('id', authUser.id)
@@ -115,6 +115,7 @@ export default function HomeDashboard() {
           .eq('id', authUser.id)
           .single();
         
+        let userData = null; // Define userData for this scope
         if (!existingUser) {
           const { data: newUser, error: insertError } = await supabase
             .from('users')
