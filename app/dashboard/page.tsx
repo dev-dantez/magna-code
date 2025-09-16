@@ -79,6 +79,7 @@ export default function HomeDashboard() {
       const authUser = session.user;
 
       // Fetch user profile from public.users table
+      const userError = userProfileError;
       let { data: userData, error: userError } = await supabase
         .from('users')
         .select('id, username, email, avatar_url, bio')
