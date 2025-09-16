@@ -29,14 +29,6 @@ function useTypewriter(text: string, speed = 38) {
   return { display, cursor };
 }
 
-const names = [
-  "Ava Johnson","Liam Patel","Noah Kim","Mia Garcia","Ethan Brown","Sophia Nguyen","Lucas Smith","Isabella Rossi","Amelia Chen","Oliver Davis","Zoe Lopez","Elijah Wilson","Emma Martin","James Clark","Charlotte Lewis","Henry Walker","Luna Young","Jack Hall","Aria Allen","Levi King"
-];
-
-function initials(name: string) {
-  return name.split(" ").map((n) => n[0]).slice(0, 2).join("");
-}
-
 const commands = [
   "> Connecting to builders network...",
   "> 523 collaborators online",
@@ -90,10 +82,6 @@ export default function HeroSection() {
     e.currentTarget.style.setProperty("--ry", `${y}px`);
   };
 
-  // HUD orbit positions
-  const ring1 = names.slice(0, 6);
-  const ring2 = names.slice(6, 12);
-
   return (
     <section ref={heroRef} className="relative isolate overflow-hidden min-h-[92vh] flex items-center justify-center text-center px-6 py-24 bg-black">
       {/* Neon grid + particle field */}
@@ -138,33 +126,6 @@ export default function HeroSection() {
           <div className="relative group">
             <Link href="/create-account" className="secondary-cta glass-btn">Join the Community 🤝</Link>
             <div className="tooltip">Free to join.</div>
-          </div>
-        </div>
-
-        {/* HUD-style orbiting avatars */}
-        <div className="mt-14">
-          <p className="text-white/80 text-sm mb-4">Trusted by 500+ developers worldwide</p>
-          <div className="hud-orbit mx-auto">
-            <div className="orbit ring-1">
-              {ring1.map((n, i) => {
-                const angle = (i / ring1.length) * 360;
-                return (
-                  <div key={n} className="orbit-item" style={{ transform: `rotate(${angle}deg) translate(var(--r1)) rotate(${-angle}deg)` }}>
-                    <div className="avatar-hud">{initials(n)}</div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="orbit ring-2">
-              {ring2.map((n, i) => {
-                const angle = (i / ring2.length) * 360 + 30;
-                return (
-                  <div key={n} className="orbit-item" style={{ transform: `rotate(${angle}deg) translate(var(--r2)) rotate(${-angle}deg)` }}>
-                    <div className="avatar-hud">{initials(n)}</div>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
 
