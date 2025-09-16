@@ -38,6 +38,18 @@ export default function HeroSection() {
           <span key={tagIndex}>{TAGLINES[tagIndex]}</span>
         </div>
 
+        {/* Reference-style centered visual */}
+        <figure className="mt-10 mx-auto w-full max-w-[752px]">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-white">
+            <img
+              src="https://cdn.dribbble.com/userupload/7480349/file/original-7e2f4bc653aeea5038f03acad8af9658.png?resize=1200x"
+              alt="Product hero reference visual"
+              className="w-full h-auto block"
+              loading="lazy"
+            />
+          </div>
+        </figure>
+
         <div className="mt-10 flex items-center justify-center gap-4 sm:gap-6">
           <Link href="/projects" className="px-5 py-3 rounded-full font-semibold bg-white text-black hover:bg-gray-100 transition-colors">
             Start Building 🚀
